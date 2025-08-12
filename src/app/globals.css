@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Custom dashboard styles */
+.dashboard-nav {
+  @apply bg-white shadow-sm border-b border-gray-200;
+}
+
+.dashboard-sidebar {
+  @apply bg-gray-900 text-white w-64 min-h-screen;
+}
+
+.dashboard-content {
+  @apply flex-1 p-6;
+}
+
+.dashboard-card {
+  @apply bg-white rounded-lg shadow-sm border border-gray-200 p-6;
+}
+
+.alert-banner {
+  @apply bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4;
+}
+
+.alert-banner.error {
+  @apply bg-red-50 border-red-400;
+}
+
+.alert-banner.success {
+  @apply bg-green-50 border-green-400;
+}
