@@ -94,15 +94,15 @@ retailx-dashboard/
 
 The dashboard integrates with the following APIs:
 
-1. **Inventory API** (`/api/inventory`)
+1. **Inventory API** (`/inventory`)
    - GET - Fetch inventory items
    - PUT - Update inventory quantities
 
-2. **Orders API** (`/api/orders`) 
+2. **Orders API** (`/orders`) 
    - GET - Fetch order list
    - PUT - Update order status
 
-3. **Notifications API** (`/api/notifications`)
+3. **Notifications API** (`/notifications`)
    - GET - Fetch system alerts and notifications
 
 ## Docker Support

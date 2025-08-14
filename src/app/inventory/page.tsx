@@ -40,8 +40,8 @@ export default function InventoryPage() {
 
       // Fetch inventory data and notifications in parallel
       const [inventoryResponse, notificationsResponse] = await Promise.allSettled([
-        fetch(`${process.env.NEXT_PUBLIC_INVENTORY_API_URL}/api/inventory`),
-        fetch(`${process.env.NEXT_PUBLIC_NOTIFICATIONS_API_URL}/api/notifications`)
+        fetch(`${process.env.NEXT_PUBLIC_INVENTORY_API_URL}/inventory`),
+        fetch(`${process.env.NEXT_PUBLIC_NOTIFICATIONS_API_URL}/notifications`)
       ])
 
       // Process inventory data
@@ -81,7 +81,7 @@ export default function InventoryPage() {
   const handleUpdateInventory = async (itemId: string, newQuantity: number) => {
     try {
       // TODO: Implement inventory update functionality
-      const response = await fetch(`${process.env.NEXT_PUBLIC_INVENTORY_API_URL}/api/inventory/${itemId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_INVENTORY_API_URL}/inventory/${itemId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

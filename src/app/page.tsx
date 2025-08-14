@@ -40,9 +40,9 @@ export default function DashboardHome() {
     try {
       // Fetch data from all APIs in parallel
       const [ordersResponse, inventoryResponse, notificationsResponse] = await Promise.allSettled([
-        fetch(`${process.env.NEXT_PUBLIC_ORDERS_API_URL}/api/orders`),
-        fetch(`${process.env.NEXT_PUBLIC_INVENTORY_API_URL}/api/inventory`),
-        fetch(`${process.env.NEXT_PUBLIC_NOTIFICATIONS_API_URL}/api/notifications`)
+        fetch(`${process.env.NEXT_PUBLIC_ORDERS_API_URL}/orders`),
+        fetch(`${process.env.NEXT_PUBLIC_INVENTORY_API_URL}/inventory`),
+        fetch(`${process.env.NEXT_PUBLIC_NOTIFICATIONS_API_URL}/notifications`)
       ])
 
       // Process orders data

@@ -34,11 +34,11 @@ export class ApiClient {
 
   // Inventory API methods
   static async getInventory() {
-    return this.request(`${API_ENDPOINTS.INVENTORY}/api/inventory`)
+    return this.request(`${API_ENDPOINTS.INVENTORY}/inventory`)
   }
 
   static async updateInventoryItem(itemId: string, data: any) {
-    return this.request(`${API_ENDPOINTS.INVENTORY}/api/inventory/${itemId}`, {
+    return this.request(`${API_ENDPOINTS.INVENTORY}/inventory/${itemId}`, {
       method: 'PUT',
       body: JSON.stringify(data),
     })
@@ -46,18 +46,18 @@ export class ApiClient {
 
   // Orders API methods
   static async getOrders() {
-    return this.request(`${API_ENDPOINTS.ORDERS}/api/orders`)
+    return this.request(`${API_ENDPOINTS.ORDERS}/orders`)
   }
 
   static async updateOrderStatus(orderId: string, status: string) {
-    return this.request(`${API_ENDPOINTS.ORDERS}/api/orders/${orderId}`, {
+    return this.request(`${API_ENDPOINTS.ORDERS}/orders/${orderId}`, {
       method: 'PUT',
       body: JSON.stringify({ status }),
     })
   }
 
   static async createOrder(orderData: any) {
-    return this.request(`${API_ENDPOINTS.ORDERS}/api/orders`, {
+    return this.request(`${API_ENDPOINTS.ORDERS}/orders`, {
       method: 'POST',
       body: JSON.stringify(orderData),
     })
@@ -65,11 +65,11 @@ export class ApiClient {
 
   // Legacy Notifications API methods
   static async getLegacyNotifications() {
-    return this.request(`${API_ENDPOINTS.LEGACY_NOTIFICATIONS}/api/notifications`)
+    return this.request(`${API_ENDPOINTS.LEGACY_NOTIFICATIONS}/notifications`)
   }
 
   static async getLegacyNotificationsByType(type: string) {
-    return this.request(`${API_ENDPOINTS.LEGACY_NOTIFICATIONS}/api/notifications?type=${type}`)
+    return this.request(`${API_ENDPOINTS.LEGACY_NOTIFICATIONS}/notifications?type=${type}`)
   }
 
   // Modern Messaging Hub API methods

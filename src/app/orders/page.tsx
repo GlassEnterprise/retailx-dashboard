@@ -48,8 +48,8 @@ export default function OrdersPage() {
 
       // Fetch orders data and notifications in parallel
       const [ordersResponse, notificationsResponse] = await Promise.allSettled([
-        fetch(`${process.env.NEXT_PUBLIC_ORDERS_API_URL}/api/orders`),
-        fetch(`${process.env.NEXT_PUBLIC_NOTIFICATIONS_API_URL}/api/notifications`)
+        fetch(`${process.env.NEXT_PUBLIC_ORDERS_API_URL}/orders`),
+        fetch(`${process.env.NEXT_PUBLIC_NOTIFICATIONS_API_URL}/notifications`)
       ])
 
       // Process orders data
@@ -92,7 +92,7 @@ export default function OrdersPage() {
   const handleUpdateOrderStatus = async (orderId: string, newStatus: string) => {
     try {
       // TODO: Implement order status update functionality
-      const response = await fetch(`${process.env.NEXT_PUBLIC_ORDERS_API_URL}/api/orders/${orderId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_ORDERS_API_URL}/orders/${orderId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
