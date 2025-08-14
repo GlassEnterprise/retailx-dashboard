@@ -2,26 +2,11 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { ApiClient } from '@/lib/api'
+import { InventoryItem, Notification } from '@/types'
 
 // TODO: Import UI components from retailx-ui-components
 // import { Card, Button } from 'retailx-ui-components'
-
-interface InventoryItem {
-  id: string
-  productName: string
-  sku: string
-  quantity: number
-  price: number
-  category: string
-  lastUpdated: string
-}
-
-interface Notification {
-  id: string
-  message: string
-  type: 'info' | 'warning' | 'error'
-  timestamp: string
-}
 
 export default function InventoryPage() {
   const [inventory, setInventory] = useState<InventoryItem[]>([])
@@ -38,24 +23,24 @@ export default function InventoryPage() {
       setLoading(true)
       setError(null)
 
-      // Fetch inventory data and notifications in parallel
-      const [inventoryResponse, notificationsResponse] = await Promise.allSettled([
-        fetch(`${process.env.NEXT_PUBLIC_INVENTORY_API_URL}/inventory`),
-        fetch(`${process.env.NEXT_PUBLIC_NOTIFICATIONS_API_URL}/notifications`)
+      // Fetch inventory data and notifications in parallel using ApiClient
+      const [inventoryResult, notificationsResult] = await Promise.allSettled([
+        ApiClient.getInventory(),
+        ApiClient.getLegacyNotifications()
       ])
 
       // Process inventory data
-      if (inventoryResponse.status === 'fulfilled' && inventoryResponse.value.ok) {
-        const inventoryData = await inventoryResponse.value.json()
+      if (inventoryResult.status === 'fulfilled') {
+        const inventoryData = inventoryResult.value
         setInventory(Array.isArray(inventoryData) ? inventoryData : [])
       } else {
-        console.error('Failed to fetch inventory data')
-        // TODO: Implement proper error handling
+        console.error('Failed to fetch inventory data:', inventoryResult.reason)
+        setError('Failed to load inventory data. Please try again.')
       }
 
       // Process notifications data
-      if (notificationsResponse.status === 'fulfilled' && notificationsResponse.value.ok) {
-        const notificationsData = await notificationsResponse.value.json()
+      if (notificationsResult.status === 'fulfilled') {
+        const notificationsData = notificationsResult.value
         if (Array.isArray(notificationsData)) {
           const inventoryAlerts = notificationsData
             .filter((notif: any) => notif.message?.toLowerCase().includes('inventory'))
@@ -68,11 +53,13 @@ export default function InventoryPage() {
             }))
           setNotifications(inventoryAlerts)
         }
+      } else {
+        console.warn('Failed to fetch notifications:', notificationsResult.reason)
+        // Don't set error for notifications failure, just log it
       }
     } catch (error) {
       console.error('Error fetching inventory data:', error)
       setError('Failed to load inventory data. Please try again.')
-      // TODO: Implement retry mechanism
     } finally {
       setLoading(false)
     }
@@ -80,23 +67,12 @@ export default function InventoryPage() {
 
   const handleUpdateInventory = async (itemId: string, newQuantity: number) => {
     try {
-      // TODO: Implement inventory update functionality
-      const response = await fetch(`${process.env.NEXT_PUBLIC_INVENTORY_API_URL}/inventory/${itemId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ quantity: newQuantity }),
-      })
-
-      if (response.ok) {
-        // Refresh inventory data
-        fetchInventoryData()
-      } else {
-        console.error('Failed to update inventory')
-      }
+      await ApiClient.updateInventoryItem(itemId, { quantity: newQuantity })
+      // Refresh inventory data after successful update
+      fetchInventoryData()
     } catch (error) {
       console.error('Error updating inventory:', error)
+      setError('Failed to update inventory item. Please try again.')
     }
   }
 
